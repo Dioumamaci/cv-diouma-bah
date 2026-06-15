@@ -573,7 +573,20 @@
 </div>
 
 <!-- FAB -->
-<button id="fab" onclick="openEditModal()" title="Modifier le CV">✏️</button>
+<button id="fab" onclick="openEditModal()" title="Modifier le CV" style="display:none;">✏️</button>
+
+<!-- PIN MODAL -->
+<div id="pin-modal" style="display:none;position:fixed;inset:0;z-index:600;background:rgba(7,12,26,0.97);align-items:center;justify-content:center;">
+  <div style="background:#131D30;border:1px solid #243352;border-radius:16px;padding:28px 24px;width:280px;text-align:center;">
+    <div style="font-size:28px;margin-bottom:12px;">🔐</div>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:12px;color:#8AAABF;letter-spacing:0.08em;margin-bottom:20px;">ACCÈS ADMINISTRATEUR</div>
+    <input id="pin-input" type="password" maxlength="6" placeholder="• • • • • •"
+      style="width:100%;background:#0B1120;border:1px solid #243352;border-radius:8px;padding:12px;text-align:center;color:#F0F5FF;font-size:20px;font-family:'JetBrains Mono',monospace;letter-spacing:0.3em;outline:none;"
+      oninput="checkPin()" onkeydown="if(event.key==='Escape')closePinModal()">
+    <div id="pin-error" style="color:#F87171;font-size:11px;margin-top:10px;min-height:16px;font-family:'JetBrains Mono',monospace;"></div>
+    <button onclick="closePinModal()" style="margin-top:14px;background:transparent;border:1px solid #243352;border-radius:8px;padding:8px 20px;color:#8AAABF;font-size:12px;cursor:pointer;">Annuler</button>
+  </div>
+</div>
 
 <!-- EDIT MODAL -->
 <div id="edit-modal">
@@ -993,10 +1006,69 @@ function saveFromModal() {
   showToast();
 }
 
-function showToast() {
+function showToast(msg) {
   const t = document.getElementById('toast');
+  t.textContent = msg || '✓ CV mis à jour avec succès';
   t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ─── PIN SYSTEM ──────────────────────────────────────────────────
+const SECRET_PIN = '19398711'; // ← Change this to your secret PIN
+
+let tapCount = 0;
+let tapTimer = null;
+
+// Secret trigger: tap avatar 5 times quickly
+document.getElementById('avatar-el').addEventListener('click', () => {
+  tapCount++;
+  clearTimeout(tapTimer);
+  tapTimer = setTimeout(() => { tapCount = 0; }, 1500);
+  if (tapCount >= 5) {
+    tapCount = 0;
+    // If already unlocked this session, open directly
+    if (sessionStorage.getItem('cv_unlocked') === '1') {
+      showFab();
+    } else {
+      openPinModal();
+    }
+  }
+});
+
+function openPinModal() {
+  const m = document.getElementById('pin-modal');
+  m.style.display = 'flex';
+  document.getElementById('pin-input').value = '';
+  document.getElementById('pin-error').textContent = '';
+  setTimeout(() => document.getElementById('pin-input').focus(), 100);
+}
+
+function closePinModal() {
+  document.getElementById('pin-modal').style.display = 'none';
+}
+
+function checkPin() {
+  const val = document.getElementById('pin-input').value;
+  if (val.length < SECRET_PIN.length) return;
+  if (val === SECRET_PIN) {
+    sessionStorage.setItem('cv_unlocked', '1');
+    closePinModal();
+    showFab();
+    showToast('🔓 Mode édition activé');
+  } else {
+    document.getElementById('pin-error').textContent = 'Code incorrect';
+    document.getElementById('pin-input').value = '';
+    setTimeout(() => { document.getElementById('pin-error').textContent = ''; }, 1500);
+  }
+}
+
+function showFab() {
+  document.getElementById('fab').style.display = 'flex';
+}
+
+// Restore fab if already unlocked in this session
+if (sessionStorage.getItem('cv_unlocked') === '1') {
+  showFab();
 }
 
 // ─── INIT ────────────────────────────────────────────────────────

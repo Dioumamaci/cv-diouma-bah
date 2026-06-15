@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diouma BAH — Senior Data Engineer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0B1120;
+    --surface: #131D30;
+    --surface2: #1A2640;
+    --accent: #4F93F8;
+    --accent2: #82B8FF;
+    --accent-glow: rgba(79,147,248,0.15);
+    --text: #F0F5FF;
+    --text-muted: #A8BACE;
+    --text-dim: #6E87A2;
+    --border: #243352;
+    --tag-bg: #172034;
+    --tag-border: #2A3F60;
+    --success: #34D399;
+    --warning: #FBBF24;
+    --timeline: #2A3F60;
+    --dot: #4F93F8;
+    --radius: 12px;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { background: #0B1120; }
+
+  body {
+    background: #0B1120;
+    color: #F0F5FF;
+    font-family: var(--font);
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    overflow-x: hidden;
+  }
+
+  .sections { background: #0B1120; }
+  .section { background: #0B1120; }
+  .timeline { background: #0B1120; }
+  .skills-section { background: #0B1120; }
+  .cert-grid { background: #0B1120; }
+  .strengths-wrap { background: #0B1120; }
+  .lang-wrap { background: #0B1120; }
+
+  /* EDIT MODE BANNER */
+  #edit-banner {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: linear-gradient(90deg, #1E3A8A, #1D4ED8);
+    padding: 10px 16px;
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    box-shadow: 0 2px 20px rgba(59,130,246,0.4);
+  }
+  #edit-banner.active { display: flex; }
+  #edit-banner span {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #BFDBFE;
+    letter-spacing: 0.05em;
+  }
+  .banner-btns { display: flex; gap: 8px; }
+  .btn-save {
+    background: #10B981; color: white; border: none; border-radius: 6px;
+    padding: 5px 14px; font-size: 12px; font-weight: 600; cursor: pointer;
+  }
+  .btn-cancel {
+    background: transparent; color: #93C5FD; border: 1px solid #3B82F6;
+    border-radius: 6px; padding: 5px 14px; font-size: 12px; cursor: pointer;
+  }
+
+  /* HEADER / HERO */
+  .hero {
+    position: relative;
+    background: linear-gradient(160deg, #0D1528 0%, #070C1A 100%);
+    padding: 32px 20px 28px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: -60px; right: -60px;
+    width: 220px; height: 220px;
+    background: radial-gradient(circle, rgba(59,130,246,0.12) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute; bottom: -40px; left: -40px;
+    width: 160px; height: 160px;
+    background: radial-gradient(circle, rgba(59,130,246,0.07) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-top {
+    display: flex; align-items: center; gap: 16px; margin-bottom: 20px;
+  }
+  .avatar-wrap {
+    position: relative; flex-shrink: 0;
+  }
+  .avatar {
+    width: 76px; height: 76px; border-radius: 50%;
+    border: 2px solid var(--accent);
+    background: var(--surface2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; font-weight: 700; color: var(--accent);
+    font-family: var(--font-mono);
+    box-shadow: 0 0 20px rgba(59,130,246,0.3);
+    overflow: hidden;
+  }
+  .avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .status-dot {
+    position: absolute; bottom: 3px; right: 3px;
+    width: 14px; height: 14px; border-radius: 50%;
+    background: var(--success);
+    border: 2px solid var(--bg);
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  }
+  .hero-info { flex: 1; min-width: 0; }
+  .hero-name {
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 700; color: #FFFFFF;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+  }
+  .hero-title {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--accent2);
+    margin-top: 4px; letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .hero-location {
+    font-size: 12px; color: #A8BACE;
+    margin-top: 6px; display: flex; align-items: center; gap: 5px;
+  }
+
+  .hero-bio {
+    font-size: 13px; line-height: 1.7;
+    color: #C8D8EA;
+    padding: 14px 16px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--accent);
+    position: relative; z-index: 1;
+  }
+
+  /* CONTACT */
+  .contact-strip {
+    display: flex; gap: 8px; flex-wrap: wrap;
+    padding: 16px 20px;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .contact-chip {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 12px;
+    font-size: 12px; color: #B8CCE0;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(79,147,248,0.2);
+    touch-action: manipulation;
+  }
+  a.contact-chip:hover, a.contact-chip:active {
+    border-color: var(--accent);
+    color: var(--accent2);
+    background: var(--accent-glow);
+  }
+  .contact-chip .icon { font-size: 13px; }
+
+  /* NAV TABS */
+  .nav-tabs {
+    display: flex; overflow-x: auto; gap: 0;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-tabs::-webkit-scrollbar { display: none; }
+  .nav-tab {
+    flex-shrink: 0;
+    padding: 12px 18px;
+    font-size: 12px; font-weight: 500;
+    color: #A8BACE;
+    cursor: pointer; border: none; background: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+  .nav-tab.active {
+    color: var(--accent2);
+    border-bottom-color: var(--accent);
+    background: var(--accent-glow);
+  }
+
+  /* SECTIONS */
+  .sections { padding-bottom: 80px; }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* SKILLS SECTION */
+  .skills-section { padding: 20px; }
+  .skills-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .skill-card {
+    background: #131D30;
+    border: 1px solid #243352;
+    border-radius: var(--radius);
+    padding: 14px;
+    transition: border-color 0.2s, transform 0.15s;
+  }
+  .skill-card:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .skill-name { font-size: 12px; font-weight: 600; color: #F0F5FF; margin-bottom: 8px; }
+  .skill-dots { display: flex; gap: 4px; }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--tag-bg); border: 1px solid var(--tag-border);
+  }
+  .dot.filled { background: var(--accent); border-color: var(--accent); box-shadow: 0 0 6px rgba(59,130,246,0.5); }
+
+  /* RADAR CHART */
+  .radar-wrap {
+    display: flex; justify-content: center;
+    padding: 20px 0 8px;
+  }
+
+  /* STRENGTHS */
+  .strengths-wrap { padding: 0 20px; margin-top: 16px; }
+  .strengths-title {
+    font-family: var(--font-mono); font-size: 10px;
+    color: #8AAABF; letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 10px;
+  }
+  .tags-cloud { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag {
+    background: var(--tag-bg); border: 1px solid var(--tag-border);
+    border-radius: 20px; padding: 5px 12px;
+    font-size: 11px; color: #A8BACE;
+    transition: all 0.2s; cursor: default;
+  }
+  .tag:hover { border-color: var(--accent); color: var(--accent2); background: var(--accent-glow); }
+
+  /* LANGUAGES */
+  .lang-wrap { padding: 20px; margin-top: 4px; }
+  .lang-item { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .lang-name { font-size: 13px; font-weight: 500; width: 70px; }
+  .lang-bar-track {
+    flex: 1; height: 6px; background: var(--surface2);
+    border-radius: 3px; overflow: hidden;
+  }
+  .lang-bar-fill {
+    height: 100%; border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    box-shadow: 0 0 8px rgba(59,130,246,0.4);
+  }
+
+  /* TIMELINE (Experience & Education) */
+  .timeline { padding: 20px 20px 20px 20px; }
+  .tl-item {
+    position: relative;
+    padding-left: 24px;
+    margin-bottom: 24px;
+  }
+  .tl-item:not(:last-child)::before {
+    content: '';
+    position: absolute; left: 7px; top: 20px;
+    width: 2px;
+    bottom: -24px;
+    background: linear-gradient(to bottom, var(--accent), var(--timeline));
+  }
+  .tl-dot {
+    position: absolute; left: 0; top: 4px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--bg); border: 2px solid var(--accent);
+    box-shadow: 0 0 10px rgba(59,130,246,0.4);
+  }
+  .tl-dot.current {
+    background: var(--accent);
+    animation: glow 2s infinite;
+  }
+  @keyframes glow {
+    0%, 100% { box-shadow: 0 0 8px rgba(59,130,246,0.5); }
+    50% { box-shadow: 0 0 18px rgba(59,130,246,0.9); }
+  }
+  .tl-header { margin-bottom: 6px; }
+  .tl-role {
+    font-size: 14px; font-weight: 600; color: #F0F5FF;
+  }
+  .tl-company {
+    font-size: 12px; color: var(--accent2); margin-top: 2px;
+    font-weight: 500;
+  }
+  .tl-period {
+    font-family: var(--font-mono); font-size: 10px;
+    color: #8AAABF; margin-top: 2px;
+    letter-spacing: 0.05em;
+  }
+  .tl-project-title {
+    font-size: 13px; font-weight: 600; color: #F0F5FF;
+    margin: 10px 0 4px;
+  }
+  .tl-desc {
+    font-size: 12px; line-height: 1.7; color: #B8CCE0;
+    margin-bottom: 8px;
+  }
+  .tl-tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .tl-tag {
+    background: var(--tag-bg); border: 1px solid var(--tag-border);
+    border-radius: 4px; padding: 2px 8px;
+    font-family: var(--font-mono); font-size: 10px; color: #8AAABF;
+  }
+  .tl-card {
+    background: #131D30;
+    border: 1px solid #243352;
+    border-radius: var(--radius);
+    padding: 14px;
+    margin-top: 6px;
+  }
+  .tl-tasks {
+    list-style: none; padding: 0; margin-top: 8px;
+  }
+  .tl-tasks li {
+    font-size: 12px; color: #B0C4D8;
+    padding: 3px 0 3px 14px;
+    position: relative; line-height: 1.5;
+  }
+  .tl-tasks li::before {
+    content: '›';
+    position: absolute; left: 0;
+    color: var(--accent); font-weight: 700;
+  }
+
+  /* CERTIFICATIONS */
+  .cert-grid { padding: 20px; display: flex; flex-direction: column; gap: 10px; }
+  .cert-card {
+    background: #131D30;
+    border: 1px solid #243352;
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex; align-items: center; gap: 12px;
+    transition: border-color 0.2s;
+  }
+  .cert-card:hover { border-color: var(--accent); }
+  .cert-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: var(--accent-glow); border: 1px solid var(--tag-border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .cert-info { flex: 1; min-width: 0; }
+  .cert-name { font-size: 13px; font-weight: 600; color: #F0F5FF; }
+  .cert-year { font-family: var(--font-mono); font-size: 11px; color: var(--accent2); margin-top: 2px; }
+
+  /* FAB EDIT BUTTON */
+  #fab {
+    position: fixed; bottom: 24px; right: 20px; z-index: 200;
+    width: 52px; height: 52px; border-radius: 50%;
+    background: linear-gradient(135deg, #1D4ED8, #3B82F6);
+    border: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(59,130,246,0.5);
+    font-size: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  #fab:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(59,130,246,0.7); }
+  #fab.editing { background: linear-gradient(135deg, #065F46, #10B981); }
+
+  /* EDIT MODAL */
+  #edit-modal {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: rgba(7,12,26,0.95);
+    overflow-y: auto;
+  }
+  #edit-modal.open { display: flex; flex-direction: column; }
+  .modal-header {
+    background: var(--surface);
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .modal-title {
+    font-family: var(--font-mono); font-size: 13px; color: var(--accent2);
+    letter-spacing: 0.05em;
+  }
+  .modal-close {
+    background: none; border: 1px solid var(--border); border-radius: 6px;
+    color: #A8BACE; font-size: 18px; cursor: pointer;
+    width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;
+  }
+  .modal-body { padding: 20px; flex: 1; }
+  .form-section { margin-bottom: 24px; }
+  .form-section-title {
+    font-family: var(--font-mono); font-size: 10px; color: #8AAABF;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-bottom: 12px; padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .form-group { margin-bottom: 12px; }
+  label { display: block; font-size: 11px; color: #A8BACE; margin-bottom: 5px; font-weight: 500; }
+  input[type=text], input[type=email], input[type=tel], textarea {
+    width: 100%; background: var(--surface2);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 12px; color: #F0F5FF;
+    font-family: var(--font); font-size: 13px;
+    outline: none; transition: border-color 0.2s;
+    resize: vertical;
+  }
+  input:focus, textarea:focus { border-color: var(--accent); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .modal-footer {
+    padding: 16px 20px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex; gap: 10px;
+    position: sticky; bottom: 0;
+  }
+  .btn-primary {
+    flex: 1; background: linear-gradient(135deg, #1D4ED8, #3B82F6);
+    color: white; border: none; border-radius: 8px;
+    padding: 12px; font-size: 14px; font-weight: 600;
+    cursor: pointer; font-family: var(--font);
+  }
+  .btn-secondary {
+    flex: 1; background: transparent; color: #A8BACE;
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 12px; font-size: 14px; cursor: pointer; font-family: var(--font);
+  }
+
+  /* TOAST */
+  #toast {
+    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+    background: #10B981; color: white;
+    padding: 10px 20px; border-radius: 20px;
+    font-size: 13px; font-weight: 600;
+    display: none; z-index: 999;
+    box-shadow: 0 4px 20px rgba(16,185,129,0.4);
+    white-space: nowrap;
+  }
+  #toast.show { display: block; animation: toastIn 0.3s ease; }
+  @keyframes toastIn {
+    from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+    to { opacity: 1; transform: translateX(-50%) translateY(0); }
+  }
+
+  /* SECTION LABEL */
+  .section-label {
+    font-family: var(--font-mono); font-size: 10px;
+    color: #8AAABF; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 16px 20px 4px;
+  }
+
+  /* responsive */
+  @media(min-width: 480px) {
+    .hero { padding: 36px 28px 32px; }
+    .skills-grid { grid-template-columns: 1fr 1fr 1fr; }
+  }
+  @media(min-width: 640px) {
+    body { max-width: 680px; margin: 0 auto; }
+    .nav-tabs { position: sticky; top: 0; }
+  }
+
+  [contenteditable="true"] {
+    outline: 1px dashed var(--accent);
+    border-radius: 4px;
+    padding: 2px 4px;
+    cursor: text;
+  }
+</style>
+</head>
+<body>
+
+<!-- EDIT BANNER -->
+<div id="edit-banner">
+  <span>✏️ MODE ÉDITION ACTIF</span>
+  <div class="banner-btns">
+    <button class="btn-cancel" onclick="cancelEdit()">Annuler</button>
+    <button class="btn-save" onclick="saveAll()">💾 Sauvegarder</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-top">
+    <div class="avatar-wrap">
+      <div class="avatar" id="avatar-el">DB</div>
+      <div class="status-dot" title="Disponible"></div>
+    </div>
+    <div class="hero-info">
+      <div class="hero-name" id="hero-name">Diouma BAH</div>
+      <div class="hero-title" id="hero-title">Senior Data Engineer</div>
+      <div class="hero-location">📍 <span id="hero-location">L-7785, Luxembourg</span></div>
+    </div>
+  </div>
+  <div class="hero-bio" id="hero-bio">
+    Ingénieur Data Senior spécialisé dans l'implémentation de solutions BI — de l'analyse des besoins métier à la modélisation des données et au déploiement de solutions techniques, incluant reporting et dashboarding. Ouvert d'esprit, à l'écoute et orienté solutions.
+  </div>
+</div>
+
+<!-- CONTACT -->
+<div class="contact-strip">
+  <a class="contact-chip" id="link-phone" href="tel:+352661348644"><span class="icon">📞</span><span id="contact-phone">+352 661 348 644</span></a>
+  <a class="contact-chip" id="link-email" href="mailto:dioumamaci@gmail.com"><span class="icon">✉️</span><span id="contact-email">dioumamaci@gmail.com</span></a>
+  <span class="contact-chip"><span class="icon">🏠</span><span id="contact-addr">13b, Rue du Nord</span></span>
+</div>
+
+<!-- NAV -->
+<div class="nav-tabs">
+  <button class="nav-tab active" onclick="showTab('skills')">Compétences</button>
+  <button class="nav-tab" onclick="showTab('experience')">Expérience</button>
+  <button class="nav-tab" onclick="showTab('education')">Formation</button>
+  <button class="nav-tab" onclick="showTab('certs')">Certifications</button>
+</div>
+
+<!-- SECTIONS -->
+<div class="sections">
+
+  <!-- SKILLS TAB -->
+  <div class="section active" id="tab-skills">
+    <div class="skills-section">
+      <div class="section-label">Compétences techniques</div>
+      <div class="skills-grid" id="skills-grid">
+        <!-- filled by JS -->
+      </div>
+
+      <div class="radar-wrap">
+        <svg id="radar" width="200" height="200" viewBox="0 0 200 200"></svg>
+      </div>
+
+      <div class="strengths-wrap">
+        <div class="strengths-title">Points forts</div>
+        <div class="tags-cloud" id="strengths-tags"></div>
+      </div>
+
+      <div class="lang-wrap">
+        <div class="strengths-title">Langues</div>
+        <div id="languages-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPERIENCE TAB -->
+  <div class="section" id="tab-experience">
+    <div class="timeline" id="experience-list"></div>
+  </div>
+
+  <!-- EDUCATION TAB -->
+  <div class="section" id="tab-education">
+    <div class="timeline" id="education-list"></div>
+  </div>
+
+  <!-- CERTIFICATIONS TAB -->
+  <div class="section" id="tab-certs">
+    <div class="section-label">Certifications professionnelles</div>
+    <div class="cert-grid" id="certs-list"></div>
+  </div>
+
+</div>
+
+<!-- FAB -->
+<button id="fab" onclick="openEditModal()" title="Modifier le CV">✏️</button>
+
+<!-- EDIT MODAL -->
+<div id="edit-modal">
+  <div class="modal-header">
+    <span class="modal-title">// MODIFIER LE CV</span>
+    <button class="modal-close" onclick="closeEditModal()">✕</button>
+  </div>
+  <div class="modal-body">
+
+    <div class="form-section">
+      <div class="form-section-title">Informations personnelles</div>
+      <div class="form-group"><label>Nom complet</label><input type="text" id="f-name"></div>
+      <div class="form-group"><label>Titre professionnel</label><input type="text" id="f-title"></div>
+      <div class="form-group"><label>Localisation</label><input type="text" id="f-location"></div>
+      <div class="form-row">
+        <div class="form-group"><label>Téléphone</label><input type="tel" id="f-phone"></div>
+        <div class="form-group"><label>Email</label><input type="email" id="f-email"></div>
+      </div>
+      <div class="form-group"><label>Adresse</label><input type="text" id="f-addr"></div>
+      <div class="form-group"><label>Profil / Bio</label><textarea id="f-bio" rows="4"></textarea></div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Compétences (nom | niveau 1–5)</div>
+      <div class="form-group"><textarea id="f-skills" rows="12" placeholder="Data Warehousing|5&#10;SQL|5&#10;ETL|5&#10;IBM DataStage|5&#10;Power BI|4&#10;PL/SQL|4&#10;Data Modeling|5&#10;AGILE|5&#10;GitOps|4&#10;Tableau|4&#10;Talend Open Studio|4&#10;Functional Analysis|5"></textarea></div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Points forts (séparés par virgule)</div>
+      <div class="form-group"><textarea id="f-strengths" rows="3"></textarea></div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Langues (nom|niveau%)</div>
+      <div class="form-group"><textarea id="f-languages" rows="3" placeholder="Français|100&#10;Anglais|90"></textarea></div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Expériences (un bloc par poste — champs séparés par | et postes par |||)</div>
+      <div class="form-group" style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">Format : Rôle|Entreprise|Période|Description|Tag1,Tag2,Tag3</div>
+      <div class="form-group"><textarea id="f-experience" rows="18"></textarea></div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Formation (Diplôme|Établissement|Année)</div>
+      <div class="form-group"><textarea id="f-education" rows="6"></textarea></div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-title">Certifications (Nom|Année|Emoji)</div>
+      <div class="form-group"><textarea id="f-certs" rows="6"></textarea></div>
+    </div>
+
+  </div>
+  <div class="modal-footer">
+    <button class="btn-secondary" onclick="closeEditModal()">Annuler</button>
+    <button class="btn-primary" onclick="saveFromModal()">💾 Enregistrer les modifications</button>
+  </div>
+</div>
+
+<div id="toast">✓ CV mis à jour avec succès</div>
+
+<script>
+// ─── DEFAULT DATA ────────────────────────────────────────────────
+const DEFAULT = {
+  name: "Diouma BAH",
+  title: "Senior Data Engineer",
+  location: "L-7785, Luxembourg",
+  phone: "+352 661 348 644",
+  email: "dioumamaci@gmail.com",
+  addr: "13b, Rue du Nord",
+  bio: "Ingénieur Data Senior spécialisé dans l'implémentation de solutions BI — de l'analyse des besoins métier à la modélisation des données et au déploiement de solutions techniques, incluant reporting et dashboarding. Ouvert d'esprit, à l'écoute et orienté solutions.",
+  skills: [
+    ["Data Warehousing", 5], ["SQL", 5], ["ETL", 5], ["IBM DataStage", 5],
+    ["Power BI", 4], ["PL/SQL", 4], ["Data Modeling", 5], ["AGILE", 5],
+    ["GitOps", 4], ["Tableau", 4], ["Talend Open Studio", 4], ["Functional Analysis", 5]
+  ],
+  strengths: ["Banking","Telecommunications","Solution-Orienté","Humilité","Flexible","Analyse","Collaboration","Communication","Prise de décision","Empathie","Engineering","Écoute active","Agilité","Échange d'idées","Initiative","Mentoring","Confiance"],
+  languages: [["Français", 100], ["Anglais", 90]],
+  experience: [
+    {
+      role: "Data Engineer",
+      company: "BGL BNP PARIBAS",
+      period: "Septembre 2024 — Présent",
+      current: true,
+      projects: [
+        {
+          title: "GDPR — Gestion du droit à l'oubli",
+          desc: "Mise en œuvre de la réglementation via l'analyse, l'enrichissement et l'industrialisation des requêtes BIC pour identifier les tiers éligibles à la suppression et leur attribuer une date de suppression potentielle.",
+          tasks: ["Analyse des exigences métier","Rédaction des spécifications fonctionnelles et techniques","Développement et déploiement ETL","Tests et validation","Architecture de solution"],
+          tags: ["IBM DataStage","IBM DB2","Oracle","AGILE","ETL","PL/SQL","SQL","Data Modeling"]
+        },
+        {
+          title: "ASSRAC — Réconciliation des données tiers Cardif & BGL",
+          desc: "Réconciliation des données tiers de Cardif Lux Vie et BGL pour détecter les écarts et envoyer un rapport mensuel de réconciliation à Cardif Lux Vie.",
+          tasks: ["Analyse fonctionnelle et technique","Développement flows ETL","Rapport mensuel automatisé"],
+          tags: ["IBM DataStage","IBM DB2","Oracle","AGILE","ETL","PL/SQL","SQL"]
+        }
+      ]
+    },
+    {
+      role: "Business Intelligence Engineer",
+      company: "BCEE — Spuerkeess",
+      period: "Juillet 2024 — Septembre 2024",
+      current: false,
+      projects: [
+        {
+          title: "iHUB Outsourcing & MIS — BAIL-IN & SRB",
+          desc: "1. Migration des données clients physiques et moraux vers iHUB. 2. Conception d'un système réglementaire permettant l'extraction de données de haute qualité pour le SRB en 24h, pour soutenir l'évaluation des actifs et passifs de la banque.",
+          tasks: ["Analyse des exigences","Spécifications techniques","Flows DataStage","Architecture de solution","Tests UAT"],
+          tags: ["IBM DataStage","IBM DB2","Data Warehousing","Oracle","Data Modeling"]
+        }
+      ]
+    },
+    {
+      role: "Business Intelligence Engineer",
+      company: "BCEE — Spuerkeess",
+      period: "Août 2021 — Mars 2021",
+      current: false,
+      projects: [
+        {
+          title: "CC19 — Suivi de l'impact Covid-19",
+          desc: "Conception et implémentation d'un système pour évaluer la situation actuelle et future des clients Spuerkeess suite au Covid-19.",
+          tasks: ["Rédaction des spécifications techniques","Flows ETL Talend","Chargement dans des data marts spécifiques"],
+          tags: ["DataStage","IBM DB2","AGILE","GitOps","ETL","Data Warehousing"]
+        }
+      ]
+    },
+    {
+      role: "Business Intelligence Engineer",
+      company: "BCEE — Spuerkeess",
+      period: "Février 2021 — Septembre 2021",
+      current: false,
+      projects: [
+        {
+          title: "TASK FORCE TFS — Transactional Data Mart",
+          desc: "Migration de programmes Webfocus vers DataStage et conception d'un DATA MART pour stocker et monitorer les transactions bancaires.",
+          tasks: ["Analyse des programmes Webfocus","Spécifications de migration","Flows DataStage ETL","Tests et déploiement"],
+          tags: ["DataStage 11.7","DB2","WebFocus","Oracle","GitOps","PL/SQL","SQL"]
+        }
+      ]
+    },
+    {
+      role: "Business Intelligence Engineer",
+      company: "Statec Luxembourg",
+      period: "Avril 2020 — Avril 2020",
+      current: false,
+      projects: [
+        {
+          title: "Implémentation d'un Data Warehouse",
+          desc: "Conception et implémentation d'ODS pour un Data Warehouse stockant les statistiques du commerce extérieur luxembourgeois.",
+          tasks: ["Ateliers de recueil des besoins","Spécifications techniques","Flows ETL Talend","Tests et déploiement"],
+          tags: ["Talend Open Studio V7","MS SQL Server","GitOps","AGILE"]
+        }
+      ]
+    },
+    {
+      role: "Business Intelligence Engineer",
+      company: "Business And Decision — Clarins",
+      period: "Octobre 2019 — Avril 2020",
+      current: false,
+      projects: [
+        {
+          title: "Supernova — Clarins",
+          desc: "Production de données propres via DataStage pour alimenter le modèle de données Adobe Campaign v7 de Clarins à des fins marketing.",
+          tasks: ["Recueil des besoins","Spécifications techniques","Flows ETL Talend","Tests et déploiement"],
+          tags: ["DataStage 11.7","ORACLE","Oracle SQL Developer","Salesforce"]
+        }
+      ]
+    },
+    {
+      role: "Business Intelligence Consultant (Stage)",
+      company: "POST Luxembourg",
+      period: "Avril 2019 — Septembre 2019",
+      current: false,
+      projects: [
+        {
+          title: "Implémentation d'un Data Warehouse",
+          desc: "Conception d'un DATA MART pour la section BI & Data Warehouse du groupe POST Luxembourg pour monitorer les activités et analyser les logs ETL DataStage.",
+          tasks: ["Recueil des besoins","Spécifications techniques","Flows DataStage","Dashboards Tableau","Tests et déploiement"],
+          tags: ["DataStage 11.7","DBeaver","DB2","Tableau Desktop 10.4","ETL","Reporting"]
+        }
+      ]
+    }
+  ],
+  education: [
+    { degree: "Master en systèmes d'information décisionnels", school: "Université de Lorraine", year: "2019" },
+    { degree: "Licence en Mathématiques et Informatique", school: "Université de Lorraine", year: "2017" }
+  ],
+  certs: [
+    { name: "Talend Data Integration Developer", year: "2020", icon: "⚙️" },
+    { name: "PL300 — Microsoft Power BI Analyst", year: "2022", icon: "📊" },
+    { name: "DP203 — Data Engineering on Microsoft Azure", year: "2022", icon: "☁️" },
+    { name: "AgilePM Practitioner", year: "2022", icon: "🔄" }
+  ]
+};
+
+// ─── STATE ───────────────────────────────────────────────────────
+let DATA = JSON.parse(localStorage.getItem('cv_data') || 'null') || DEFAULT;
+
+// ─── RENDER FUNCTIONS ────────────────────────────────────────────
+function renderAll() {
+  // Hero
+  document.getElementById('hero-name').textContent = DATA.name;
+  document.getElementById('hero-title').textContent = DATA.title;
+  document.getElementById('hero-location').textContent = DATA.location;
+  document.getElementById('hero-bio').textContent = DATA.bio;
+  document.getElementById('contact-phone').textContent = DATA.phone;
+  document.getElementById('contact-email').textContent = DATA.email;
+  document.getElementById('contact-addr').textContent = DATA.addr;
+  // Update hrefs directly by ID
+  const phoneClean = DATA.phone.replace(/\s/g, '');
+  document.getElementById('link-phone').setAttribute('href', 'tel:' + phoneClean);
+  document.getElementById('link-email').setAttribute('href', 'mailto:' + DATA.email);
+  // Avatar initials
+  const parts = DATA.name.split(' ');
+  document.getElementById('avatar-el').textContent = parts.map(p=>p[0]).join('').slice(0,2).toUpperCase();
+
+  renderSkills();
+  renderStrengths();
+  renderLanguages();
+  renderRadar();
+  renderExperience();
+  renderEducation();
+  renderCerts();
+}
+
+function renderSkills() {
+  const grid = document.getElementById('skills-grid');
+  grid.innerHTML = DATA.skills.map(([name, level]) => `
+    <div class="skill-card">
+      <div class="skill-name">${name}</div>
+      <div class="skill-dots">
+        ${[1,2,3,4,5].map(i => `<div class="dot ${i<=level?'filled':''}"></div>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderStrengths() {
+  document.getElementById('strengths-tags').innerHTML =
+    DATA.strengths.map(s => `<span class="tag">${s}</span>`).join('');
+}
+
+function renderLanguages() {
+  document.getElementById('languages-list').innerHTML = DATA.languages.map(([lang, pct]) => `
+    <div class="lang-item">
+      <span class="lang-name">${lang}</span>
+      <div class="lang-bar-track"><div class="lang-bar-fill" style="width:${pct}%"></div></div>
+    </div>
+  `).join('');
+}
+
+function renderRadar() {
+  const svg = document.getElementById('radar');
+  const top6 = DATA.skills.slice(0, 6);
+  const cx = 100, cy = 100, r = 70;
+  const n = top6.length;
+  const levels = [0.2, 0.4, 0.6, 0.8, 1.0];
+
+  function pt(i, frac) {
+    const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
+    return [cx + frac * r * Math.cos(angle), cy + frac * r * Math.sin(angle)];
+  }
+
+  let html = '';
+  // Grid rings
+  levels.forEach(frac => {
+    const pts = top6.map((_,i) => pt(i,frac).join(',')).join(' ');
+    html += `<polygon points="${pts}" fill="none" stroke="#1E3560" stroke-width="1"/>`;
+  });
+  // Axes
+  top6.forEach((_,i) => {
+    const [x,y] = pt(i,1);
+    html += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#1E3560" stroke-width="1"/>`;
+  });
+  // Data polygon
+  const datapts = top6.map(([,lv], i) => pt(i, lv/5).join(',')).join(' ');
+  html += `<polygon points="${datapts}" fill="rgba(59,130,246,0.2)" stroke="#3B82F6" stroke-width="2"/>`;
+  // Labels
+  top6.forEach(([name],i) => {
+    const [x,y] = pt(i, 1.22);
+    html += `<text x="${x}" y="${y}" fill="#8AAABF" font-size="9" text-anchor="middle" font-family="JetBrains Mono">${name.split(' ')[0]}</text>`;
+  });
+  svg.innerHTML = html;
+}
+
+function renderExperience() {
+  const list = document.getElementById('experience-list');
+  list.innerHTML = DATA.experience.map((exp, idx) => `
+    <div class="tl-item">
+      <div class="tl-dot ${exp.current ? 'current' : ''}"></div>
+      <div class="tl-header">
+        <div class="tl-role">${exp.role}</div>
+        <div class="tl-company">${exp.company}</div>
+        <div class="tl-period">${exp.period}</div>
+      </div>
+      ${exp.projects.map(p => `
+        <div class="tl-card">
+          <div class="tl-project-title">${p.title}</div>
+          <div class="tl-desc">${p.desc}</div>
+          ${p.tasks && p.tasks.length ? `<ul class="tl-tasks">${p.tasks.map(t=>`<li>${t}</li>`).join('')}</ul>` : ''}
+          <div class="tl-tags">${p.tags.map(t=>`<span class="tl-tag">${t}</span>`).join('')}</div>
+        </div>
+      `).join('')}
+    </div>
+  `).join('');
+}
+
+function renderEducation() {
+  const list = document.getElementById('education-list');
+  list.innerHTML = DATA.education.map((ed, idx) => `
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-header">
+        <div class="tl-role">${ed.degree}</div>
+        <div class="tl-company">${ed.school}</div>
+        <div class="tl-period">${ed.year}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function renderCerts() {
+  document.getElementById('certs-list').innerHTML = DATA.certs.map(c => `
+    <div class="cert-card">
+      <div class="cert-icon">${c.icon}</div>
+      <div class="cert-info">
+        <div class="cert-name">${c.name}</div>
+        <div class="cert-year">${c.year}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── TAB NAVIGATION ──────────────────────────────────────────────
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ─── EDIT MODAL ──────────────────────────────────────────────────
+function openEditModal() {
+  // Fill form
+  document.getElementById('f-name').value = DATA.name;
+  document.getElementById('f-title').value = DATA.title;
+  document.getElementById('f-location').value = DATA.location;
+  document.getElementById('f-phone').value = DATA.phone;
+  document.getElementById('f-email').value = DATA.email;
+  document.getElementById('f-addr').value = DATA.addr;
+  document.getElementById('f-bio').value = DATA.bio;
+  document.getElementById('f-skills').value = DATA.skills.map(([n,l]) => `${n}|${l}`).join('\n');
+  document.getElementById('f-strengths').value = DATA.strengths.join(', ');
+  document.getElementById('f-languages').value = DATA.languages.map(([n,p]) => `${n}|${p}`).join('\n');
+  document.getElementById('f-experience').value = DATA.experience.map(exp =>
+    exp.projects.map(p =>
+      `${exp.role}|${exp.company}|${exp.period}|${p.title} — ${p.desc}|${p.tags.join(',')}`
+    ).join('\n')
+  ).join('\n|||---\n');
+  document.getElementById('f-education').value = DATA.education.map(e => `${e.degree}|${e.school}|${e.year}`).join('\n');
+  document.getElementById('f-certs').value = DATA.certs.map(c => `${c.name}|${c.year}|${c.icon}`).join('\n');
+
+  document.getElementById('edit-modal').classList.add('open');
+  document.getElementById('fab').classList.add('editing');
+}
+
+function closeEditModal() {
+  document.getElementById('edit-modal').classList.remove('open');
+  document.getElementById('fab').classList.remove('editing');
+}
+
+function saveFromModal() {
+  DATA.name = document.getElementById('f-name').value.trim();
+  DATA.title = document.getElementById('f-title').value.trim();
+  DATA.location = document.getElementById('f-location').value.trim();
+  DATA.phone = document.getElementById('f-phone').value.trim();
+  DATA.email = document.getElementById('f-email').value.trim();
+  DATA.addr = document.getElementById('f-addr').value.trim();
+  DATA.bio = document.getElementById('f-bio').value.trim();
+
+  DATA.skills = document.getElementById('f-skills').value.trim().split('\n')
+    .filter(Boolean).map(l => { const [n,lv] = l.split('|'); return [n.trim(), parseInt(lv)||3]; });
+
+  DATA.strengths = document.getElementById('f-strengths').value.split(',').map(s=>s.trim()).filter(Boolean);
+
+  DATA.languages = document.getElementById('f-languages').value.trim().split('\n')
+    .filter(Boolean).map(l => { const [n,p] = l.split('|'); return [n.trim(), parseInt(p)||80]; });
+
+  // Simple experience re-parse
+  const expLines = document.getElementById('f-experience').value.trim().split('\n').filter(l => !l.startsWith('|||'));
+  const expMap = {};
+  expLines.forEach(line => {
+    const parts = line.split('|');
+    if(parts.length < 4) return;
+    const key = parts[0].trim() + '||' + parts[1].trim() + '||' + parts[2].trim();
+    if(!expMap[key]) expMap[key] = { role: parts[0].trim(), company: parts[1].trim(), period: parts[2].trim(), current: false, projects: [] };
+    const desc = parts[3] || '';
+    const tags = (parts[4] || '').split(',').map(t=>t.trim()).filter(Boolean);
+    expMap[key].projects.push({ title: desc.split('—')[0]?.trim() || desc, desc: desc.split('—').slice(1).join('—').trim() || desc, tasks: [], tags });
+  });
+  if(Object.keys(expMap).length > 0) {
+    DATA.experience = Object.values(expMap);
+    DATA.experience[0].current = true;
+  }
+
+  DATA.education = document.getElementById('f-education').value.trim().split('\n')
+    .filter(Boolean).map(l => { const [d,s,y] = l.split('|'); return {degree:d?.trim(),school:s?.trim(),year:y?.trim()}; });
+
+  DATA.certs = document.getElementById('f-certs').value.trim().split('\n')
+    .filter(Boolean).map(l => { const [n,y,ic] = l.split('|'); return {name:n?.trim(),year:y?.trim(),icon:ic?.trim()||'🏆'}; });
+
+  localStorage.setItem('cv_data', JSON.stringify(DATA));
+  closeEditModal();
+  renderAll();
+  showToast();
+}
+
+function showToast() {
+  const t = document.getElementById('toast');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// ─── INIT ────────────────────────────────────────────────────────
+renderAll();
+</script>
+</body>
+</html>
